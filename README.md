@@ -4,7 +4,10 @@ Prebuilt FFmpeg for JumpServer web recordings, extracted from Koko's base image.
 
 - FFmpeg 7.1.5 on Debian trixie.
 - Platforms: `linux/amd64` and `linux/arm64`.
-- JPEG frame input, concat demuxing, scaling, H.264 encoding with libx264, and MP4 output.
+- JPEG frames, H.264/MP4 and VP8/WebM input.
+- H.264/MP4 remuxing without re-encoding when the recording dimensions are stable.
+- Scaling/padding and H.264 encoding with libx264 for WebM or resized recordings.
+- MP4 output with fast-start metadata for replay.
 - Binary: `/usr/local/bin/ffmpeg`.
 
 FFmpeg libraries are statically linked. The binary dynamically links against

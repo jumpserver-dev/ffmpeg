@@ -22,7 +22,7 @@ RUN set -ex \
     done \
     && exit 1
 
-# Web recordings only need JPEG frames, scaling, H.264 encoding and MP4 output.
+# Web recordings accept JPEG frames or native H.264/MP4 and VP8/WebM streams.
 # FFmpeg libraries are static; libx264, libc and libm remain dynamic.
 RUN set -ex \
     && mkdir /tmp/ffmpeg \
@@ -32,9 +32,9 @@ RUN set -ex \
         --disable-doc --disable-debug --disable-ffplay --disable-ffprobe \
         --disable-avdevice --disable-swresample --disable-shared --enable-static \
         --enable-small --enable-ffmpeg --enable-gpl --enable-libx264 \
-        --enable-protocol=file --enable-demuxer=concat,image2 \
-        --enable-parser=mjpeg --enable-decoder=mjpeg --enable-encoder=libx264 \
-        --enable-muxer=mp4 --enable-filter=scale,format,null --enable-swscale \
+        --enable-protocol=file --enable-demuxer=concat,image2,mov,matroska \
+        --enable-parser=mjpeg,h264,vp8 --enable-decoder=mjpeg,h264,vp8 --enable-encoder=libx264 \
+        --enable-muxer=mp4 --enable-filter=scale,format,null,pad,setsar --enable-swscale \
     && make -j2 ffmpeg \
     && install -m 755 ffmpeg /usr/local/bin/ffmpeg \
     && strip /usr/local/bin/ffmpeg
